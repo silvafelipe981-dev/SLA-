@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Acadêmico - Clínica Vida+</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                        },
+                        medical: {
+                            teal: '#0d9488',
+                            emerald: '#059669',
+                            dark: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .step-card { transition: all 0.3s ease; }
+        .step-card:hover { transform: translateY(-3px); }
+        .kanban-column { min-height: 500px; }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; color: black !important; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Header Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-medical-teal flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid font-bold fa-heart-pulse text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-xl text-slate-900 tracking-tight">Clínica Vida<span class="text-brand-600">+</span></span>
+                        <span class="text-xs block text-slate-500 font-medium">Projeto Integrado Acadêmico</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 items-center">
+                    <button onclick="switchTab('capa')" id="nav-capa" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-brand-600 bg-brand-50 transition">
+                        <i class="fa-solid fa-house mr-1.5"></i>Início
+                    </button>
+                    <button onclick="switchTab('passo1')" id="nav-passo1" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-kanban mr-1.5"></i>Passo 1: Scrum
+                    </button>
+                    <button onclick="switchTab('passo2')" id="nav-passo2" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-brands fa-python mr-1.5"></i>Passo 2: Python
+                    </button>
+                    <button onclick="switchTab('passo3')" id="nav-passo3" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-square-root-variable mr-1.5"></i>Passo 3: Lógica
+                    </button>
+                    <button onclick="switchTab('passo4')" id="nav-passo4" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-layer-group mr-1.5"></i>Passo 4: Fila FIFO
+                    </button>
+                    <button onclick="switchTab('passo5')" id="nav-passo5" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-sitemap mr-1.5"></i>Passo 5: Casos de Uso
+                    </button>
+                </nav>
+
+                <!-- Global Action Buttons -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="window.print()" class="px-3 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg text-sm font-medium transition flex items-center shadow-sm">
+                        <i class="fa-solid fa-print mr-1.5"></i> <span class="hidden sm:inline">Imprimir / PDF</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div class="md:hidden border-t border-slate-200 bg-slate-50 px-2 py-2 flex overflow-x-auto space-x-1 text-xs">
+            <button onclick="switchTab('capa')" class="px-3 py-1.5 rounded-md bg-brand-600 text-white font-medium whitespace-nowrap">Início</button>
+            <button onclick="switchTab('passo1')" class="px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 font-medium whitespace-nowrap">P1: Scrum</button>
+            <button onclick="switchTab('passo2')" class="px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 font-medium whitespace-nowrap">P2: Python</button>
+            <button onclick="switchTab('passo3')" class="px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 font-medium whitespace-nowrap">P3: Lógica</button>
+            <button onclick="switchTab('passo4')" class="px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 font-medium whitespace-nowrap">P4: Fila FIFO</button>
+            <button onclick="switchTab('passo5')" class="px-3 py-1.5 rounded-md bg-white border border-slate-200 text-slate-700 font-medium whitespace-nowrap">P5: Casos Uso</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ==================== TAB: CAPA & INTRODUÇÃO ==================== -->
+        <section id="tab-capa" class="tab-content block space-y-8">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-slate-900 via-brand-800 to-brand-700 rounded-3xl p-8 sm:p-12 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute right-0 top-0 translate-x-10 -translate-y-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-hospital text-[280px]"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center space-x-2 bg-brand-500/30 backdrop-blur-md px-3 py-1 rounded-full text-brand-200 text-xs font-semibold uppercase tracking-wider mb-4 border border-brand-400/30">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Portfólio / Trabalho Acadêmico Integrado</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+                        Sistema de Gestão & Métodos Computacionais: Clínica Vida+
+                    </h1>
+                    <p class="text-slate-200 text-base sm:text-lg mb-8 leading-relaxed">
+                        Este projeto aborda o desenvolvimento multidisciplinar de um sistema médico completo, abrangendo metodologias ágeis (Scrum), desenvolvimento Python, modelagem lógica de decisões, estruturas de dados FIFO e engenharia de software com diagramação de casos de uso.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="switchTab('passo1')" class="bg-white text-brand-800 hover:bg-brand-50 px-5 py-3 rounded-xl font-bold shadow-lg transition flex items-center">
+                            Iniciar Exploração <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                        <button onclick="scrollToSection('objetivos')" class="bg-brand-600/40 hover:bg-brand-600/60 border border-brand-400/40 text-white px-5 py-3 rounded-xl font-semibold transition">
+                            Ver Objetivos do Trabalho
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid / Summary of Steps -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div onclick="switchTab('passo1')" class="step-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-brand-500 group">
+                    <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                        01
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 mb-2 group-hover:text-brand-600 transition">Quadro Scrum / Kanban</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Gerenciamento ágil de Sprints, backlog, acompanhamento de progresso e geração automatizada de relatórios em estilo Trello.</p>
+                    <span class="text-xs font-bold text-brand-600 flex items-center">Acessar Passo 1 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></span>
+                </div>
+
+                <!-- Card 2 -->
+                <div onclick="switchTab('passo2')" class="step-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-brand-500 group">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                        02
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 mb-2 group-hover:text-brand-600 transition">Programa Python Interativo</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Código executável `clinica_vida.py` com simulador online de terminal, cadastro, busca e cálculo estatístico completo.</p>
+                    <span class="text-xs font-bold text-emerald-600 flex items-center">Acessar Passo 2 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></span>
+                </div>
+
+                <!-- Card 3 -->
+                <div onclick="switchTab('passo3')" class="step-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-brand-500 group">
+                    <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                        03
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 mb-2 group-hover:text-brand-600 transition">Lógica Proposicional</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Tabelas-verdade completas (16 combinações) para Consultas Normais e Emergências, com análise detalhada de cenários.</p>
+                    <span class="text-xs font-bold text-purple-600 flex items-center">Acessar Passo 3 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></span>
+                </div>
+
+                <!-- Card 4 -->
+                <div onclick="switchTab('passo4')" class="step-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-brand-500 group">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                        04
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 mb-2 group-hover:text-brand-600 transition">Estrutura de Dados FIFO</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Algoritmo em pseudocódigo Portugol e simulador gráfico visual da Fila de Pacientes com enfileiramento e desenfileiramento.</p>
+                    <span class="text-xs font-bold text-amber-600 flex items-center">Acessar Passo 4 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></span>
+                </div>
+
+                <!-- Card 5 -->
+                <div onclick="switchTab('passo5')" class="step-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm cursor-pointer hover:border-brand-500 group md:col-span-2">
+                    <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-110 transition-transform">
+                        05
+                    </div>
+                    <h3 class="font-bold text-lg text-slate-800 mb-2 group-hover:text-brand-600 transition">Engenharia de Software (Casos de Uso)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">Diagrama UML vetorial completo com Atores (Secretária e Médico), limite de sistema e relacionamentos obrigatórios `<<include>>` estritamente modelados.</p>
+                    <span class="text-xs font-bold text-rose-600 flex items-center">Acessar Passo 5 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></span>
+                </div>
+            </div>
+
+            <!-- Objectives & Context Section -->
+            <div id="objetivos" class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-2xl font-bold text-slate-900">Objetivos do Projeto Integrado</h2>
+                    <p class="text-slate-500 text-sm">Escopo e fundamentação teórica aplicados ao ecossistema da Clínica Vida+</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-800 flex items-center">
+                            <i class="fa-solid fa-circle-check text-brand-600 mr-2"></i> Objetivos Gerais
+                        </h4>
+                        <ul class="list-disc list-inside text-sm text-slate-600 space-y-2 leading-relaxed">
+                            <li>Proporcionar uma solução tecnológica eficiente para gestão de atendimento médico de triagem e agendamento.</li>
+                            <li>Unificar metodologias de gestão de software, raciocínio lógico-matemático e estruturas formais de programação.</li>
+                            <li>Garantir acessibilidade, responsividade e visualização clara de relatórios e tomada de decisão.</li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="font-bold text-slate-800 flex items-center">
+                            <i class="fa-solid fa-bullseye text-medical-teal mr-2"></i> Escopo das Metas Técnicas
+                        </h4>
+                        <ul class="list-disc list-inside text-sm text-slate-600 space-y-2 leading-relaxed">
+                            <li><strong>Metodologia Ágil:</strong> Mapeamento do ciclo de vida do desenvolvimento em quadros Scrum com geração de métricas.</li>
+                            <li><strong>Backend/Scripting:</strong> Manipulação de dados com estruturas fundamentais em Python sem dependências externas.</li>
+                            <li><strong>Lógica Formal:</strong> Validação de regras de negócio de agendamento e emergência através de cálculo proposicional.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB: PASSO 1 - SCRUM / KANBAN ==================== -->
+        <section id="tab-passo1" class="tab-content hidden space-y-8">
+            <!-- Header Section -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600 bg-brand-50 px-2.5 py-1 rounded-md">Passo 1</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Quadro Gestão Ágil - Scrum / Kanban</h2>
+                    <p class="text-slate-500 text-sm">Gerencie o Backlog, Sprints, tarefas e visualize os relatórios de encerramento da Clínica Vida+.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="openModal('modal-trello-instructions')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition flex items-center">
+                        <i class="fa-brands fa-trello mr-1.5 text-blue-500"></i>Instruções Trello Real
+                    </button>
+                    <button onclick="exportKanbanData()" class="px-3.5 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-lg transition flex items-center shadow-sm">
+                        <i class="fa-solid fa-download mr-1.5"></i>Exportar Dados Kanban
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interactive Kanban Board -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Column: Backlog -->
+                <div class="bg-slate-100/80 p-4 rounded-xl border border-slate-200 flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-slate-700 text-sm flex items-center">
+                            <span class="w-2.5 h-2.5 rounded-full bg-slate-400 mr-2"></span> Backlog
+                        </h3>
+                        <span id="count-backlog" class="text-xs font-bold bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full">2</span>
+                    </div>
+                    <div id="col-backlog" class="space-y-3 flex-1 overflow-y-auto min-h-[300px]" ondrop="drop(event, 'backlog')" ondragover="allowDrop(event)">
+                        <!-- Card 1 -->
+                        <div id="card-1" draggable="true" ondragstart="drag(event)" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm cursor-grab hover:shadow-md transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-purple-600 px-2 py-0.5 rounded">Sprint 2</span>
+                                <span class="text-[10px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>10/Nov</span>
+                            </div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Módulo de Telemedicina</h4>
+                            <p class="text-slate-500 text-xs mb-3">Integração com chamadas de vídeo protegidas para consultas online.</p>
+                            <div class="flex justify-between items-center text-xs text-slate-400 border-t border-slate-100 pt-2">
+                                <span><i class="fa-solid fa-check-square mr-1"></i>0/3</span>
+                                <span><i class="fa-regular fa-comment mr-1"></i>1</span>
+                            </div>
+                        </div>
+                        <!-- Card 2 -->
+                        <div id="card-2" draggable="true" ondragstart="drag(event)" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm cursor-grab hover:shadow-md transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-purple-600 px-2 py-0.5 rounded">Sprint 2</span>
+                                <span class="text-[10px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>15/Nov</span>
+                            </div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Notificações por SMS/WhatsApp</h4>
+                            <p class="text-slate-500 text-xs mb-3">Lembretes automáticos de consultas para os pacientes.</p>
+                            <div class="flex justify-between items-center text-xs text-slate-400 border-t border-slate-100 pt-2">
+                                <span><i class="fa-solid fa-check-square mr-1"></i>1/2</span>
+                                <span><i class="fa-regular fa-comment mr-1"></i>0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column: Sprint Atual -->
+                <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-brand-800 text-sm flex items-center">
+                            <span class="w-2.5 h-2.5 rounded-full bg-brand-500 mr-2"></span> Sprint Atual (S1)
+                        </h3>
+                        <span id="count-sprint" class="text-xs font-bold bg-brand-100 text-brand-700 px-2 py-0.5 rounded-full">1</span>
+                    </div>
+                    <div id="col-sprint" class="space-y-3 flex-1 overflow-y-auto min-h-[300px]" ondrop="drop(event, 'sprint')" ondragover="allowDrop(event)">
+                        <!-- Card 3 -->
+                        <div id="card-3" draggable="true" ondragstart="drag(event)" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm cursor-grab hover:shadow-md transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-600 px-2 py-0.5 rounded">Sprint 1</span>
+                                <span class="text-[10px] text-slate-400"><i class="fa-regular fa-clock mr-1"></i>01/Nov</span>
+                            </div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Validação Logica de Agendamento</h4>
+                            <p class="text-slate-500 text-xs mb-3">Desenvolver matriz lógica para autorização automática de consultas.</p>
+                            <div class="flex justify-between items-center text-xs text-slate-400 border-t border-slate-100 pt-2">
+                                <span><i class="fa-solid fa-check-square mr-1"></i>2/2</span>
+                                <span><i class="fa-regular fa-comment mr-1"></i>3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column: Em Progresso -->
+                <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-100 flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-amber-800 text-sm flex items-center">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 mr-2"></span> Em Progresso
+                        </h3>
+                        <span id="count-progresso" class="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">1</span>
+                    </div>
+                    <div id="col-progresso" class="space-y-3 flex-1 overflow-y-auto min-h-[300px]" ondrop="drop(event, 'progresso')" ondragover="allowDrop(event)">
+                        <!-- Card 4 -->
+                        <div id="card-4" draggable="true" ondragstart="drag(event)" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm cursor-grab hover:shadow-md transition">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 px-2 py-0.5 rounded">Sprint 1</span>
+                                <span class="text-[10px] text-amber-600 font-semibold"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Ativo</span>
+                            </div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Módulo Python `clinica_vida.py`</h4>
+                            <p class="text-slate-500 text-xs mb-3">Implementação de cadastros com tratamento de exceções e estatísticas.</p>
+                            <div class="flex justify-between items-center text-xs text-slate-400 border-t border-slate-100 pt-2">
+                                <span><i class="fa-solid fa-check-square mr-1 font-bold text-amber-600"></i>4/5</span>
+                                <span><i class="fa-regular fa-comment mr-1"></i>5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column: Concluído -->
+                <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100 flex flex-col h-full">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-emerald-800 text-sm flex items-center">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2"></span> Concluído
+                        </h3>
+                        <span id="count-concluido" class="text-xs font-bold bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">2</span>
+                    </div>
+                    <div id="col-concluido" class="space-y-3 flex-1 overflow-y-auto min-h-[300px]" ondrop="drop(event, 'concluido')" ondragover="allowDrop(event)">
+                        <!-- Card 5 -->
+                        <div id="card-5" draggable="true" ondragstart="drag(event)" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm cursor-grab hover:shadow-md transition opacity-90">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded">Sprint 1</span>
+                                <span class="text-[10px] text-emerald-600 font-semibold"><i class="fa-solid fa-check mr-1"></i>OK</span>
+                            </div>
+                            <h4 class="font-semibold text-slate-800 text-sm mb-1">Mapeamento de Casos de Uso UML</h4>
+                            <p class="text-slate-500 text-xs mb-3">Definição dos atores Secretária, Médico e relações includes.</p>
+                            <div class="flex justify-between items-center text-xs text-emerald-600 border-t border-slate-100 pt-2">
+                                <span><i class="fa-solid fa-check-double mr-1"></i>Concluído</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sprint Report Section -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-200 pb-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Relatório de Fechamento da Sprint 1</h3>
+                        <p class="text-slate-500 text-xs">Período: 15/10/2026 a 30/10/2026 | Duração: 2 Semanas</p>
+                    </div>
+                    <span class="bg-emerald-100 text-emerald-800 font-bold text-xs px-3 py-1 rounded-full flex items-center">
+                        <i class="fa-solid fa-circle-check mr-1.5"></i>Sprint Finalizada com Sucesso
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                        <span class="text-xs text-slate-500 font-semibold uppercase block mb-1">Objetivo da Sprint</span>
+                        <p class="text-slate-800 font-medium leading-snug">Estruturar os requisitos funcionais, modelo de dados Python, lógica proposicional e filas de atendimento da clínica.</p>
+                    </div>
+
+                    <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200">
+                        <span class="text-xs text-emerald-700 font-semibold uppercase block mb-1">Resultados Obtidos</span>
+                        <p class="text-emerald-900 font-medium leading-snug">100% das tarefas críticas finalizadas, incluindo validação de regras de negócio e simulador interativo.</p>
+                    </div>
+
+                    <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200">
+                        <span class="text-xs text-amber-700 font-semibold uppercase block mb-1">Desafios Encontrados</span>
+                        <p class="text-amber-900 font-medium leading-snug">Ajustar os tratamentos de exceção para entradas inválidas no menu iterativo em Python.</p>
+                    </div>
+
+                    <div class="p-4 bg-blue-50/60 rounded-xl border border-blue-200">
+                        <span class="text-xs text-brand-700 font-semibold uppercase block mb-1">Pontos de Melhoria</span>
+                        <p class="text-brand-900 font-medium leading-snug">Implementar persistência em banco de dados SQLite para o próximo ciclo (Sprint 2).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB: PASSO 2 - PROGRAMA PYTHON ==================== -->
+        <section id="tab-passo2" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">Passo 2</span>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-1">Programa Executável Python: `clinica_vida.py`</h2>
+                    <p class="text-slate-500 text-sm">Código-fonte original utilizando dicionários, tratamento de exceções e estatísticas completas.</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="downloadPythonFile()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl transition flex items-center shadow-sm">
+                        <i class="fa-solid fa-file-arrow-down mr-2"></i> Baixar `clinica_vida.py`
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Source Code Viewer -->
+                <div class="bg-slate-900 text-slate-100 rounded-2xl overflow-hidden shadow-lg border border-slate-800 flex flex-col">
+                    <div class="bg-slate-800/80 px-4 py-3 border-b border-slate-700/60 flex justify-between items-center">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                            <span class="text-xs font-mono text-slate-400 ml-2">clinica_vida.py</span>
+                        </div>
+                        <button onclick="copyPythonCode()" class="text-xs text-slate-400 hover:text-white transition">
+                            <i class="fa-regular fa-copy mr-1"></i> Copiar
+                        </button>
+                    </div>
+                    <pre class="p-4 text-xs font-mono text-emerald-400 overflow-x-auto leading-relaxed max-h-[500px]" id="python-code-display">
+<code># =========================================================
+# PROGRAMA DE GESTÃO - CLÍNICA VIDA+
+# Arquivo: clinica_vida.py
+# Linguagem: Python 3
+# =========================================================
+
+def menu():
+    print("\n" + "="*40)
+    print("        CLÍNICA VIDA+ - MENU PRINCIPAL")
+    print("="*40)
+    print("1. Cadastrar paciente")
+    print("2. Ver estatísticas")
+    print("3. Buscar paciente pelo nome")
+    print("4. Listar todos os pacientes")
+    print("5. Sair")
+    print("="*40)
+
+def cadastrar_paciente(pacientes):
+    print("\n--- CADASTRO DE PACIENTE ---")
+    nome = input("Digite o nome completo do paciente: ").strip()
+    if not nome:
+        print("[ERRO] O nome não pode ser vazio!")
+        return
+
+    try:
+        idade = int(input("Digite a idade do paciente: "))
+        if idade < 0 or idade > 120:
+            print("[ERRO] Por favor, insira uma idade válida (0 a 120 anos).")
+            return
+    except ValueError:
+        print("[ERRO] A idade deve ser um número inteiro válido!")
+        return
+
+    telefone = input("Digite o telefone do paciente (ex: 41999998888): ").strip()
+    if not telefone:
+        print("[ERRO] O telefone não pode ficar em branco!")
+        return
+
+    # Armazenando o paciente como dicionário dentro da lista
+    paciente = {
+        "nome": nome,
+        "idade": idade,
+        "telefone": telefone
+    }
+    pacientes.append(paciente)
+    print(f"\n[SUCESSO] Paciente '{nome}' cadastrado com sucesso!")
+
+def ver_estatisticas(pacientes):
+    print("\n--- ESTATÍSTICAS DA CLÍNICA ---")
+    if not pacientes:
+        print("[AVISO] Nenhum paciente cadastrado até o momento.")
+        return
+
+    total = len(pacientes)
+    soma_idades = sum(p["idade"] for p in pacientes)
+    media_idade = soma_idades / total
+
+    paciente_mais_novo = min(pacientes, key=lambda p: p["idade"])
+    paciente_mais_velho = max(pacientes, key=lambda p: p["idade"])
+
+    print(f"Total de pacientes cadastrados : {total}")
+    print(f"Média de idade dos pacientes   : {media_idade:.1f} anos")
+    print(f"Paciente mais novo            : {paciente_mais_novo['nome']} ({paciente_mais_novo['idade']} anos)")
+    print(f"Paciente mais velho           : {paciente_mais_velho['nome']} ({paciente_mais_velho['idade']} anos)")
+
+def buscar_paciente(pacientes):
+    print("\n--- BUSCA DE PACIENTE ---")
+    if not pacientes:
+        print("[AVISO] Nenhum paciente cadastrado para realização de busca.")
+        return
+
+    termo = input("Digite o nome (ou parte do nome) para buscar: ").strip().lower()
+    encontrados = [p for p in pacientes if termo in p["nome"].lower()]
+
+    if encontrados:
+        print(f"\nResultados encontrados ({len(encontrados)}):")
+        for idx, p in enumerate(encontrados, 1):
+            print(f"{idx}. Nome: {p['nome']} | Idade: {p['idade']} anos | Tel: {p['telefone']}")
+    else:
+        print(f"\n[INFO] Nenhum paciente encontrado com o termo '{termo}'.")
+
+def listar_pacientes(pacientes):
+    print("\n--- LISTA GERAL DE PACIENTES ---")
+    if not pacientes:
+        print("[AVISO] A lista de pacientes está vazia.")
+        return
+
+    print(f"{'ID':<4} | {'NOME':<30} | {'IDADE':<6} | {'TELEFONE':<15}")
+    print("-" * 62)
+    for idx, p in enumerate(pacientes, 1):
+        print(f"{idx:<4} | {p['nome']:<30} | {p['idade']:<6} | {p['telefone']:<15}")
+
+def main():
+    pacientes = [
+        {"nome": "Ana Maria Silva", "idade": 28, "telefone": "41988881111"},
+        {"nome": "Carlos Eduardo", "idade": 65, "telefone": "41999992222"},
+        {"nome": "Beatriz Santos", "idade": 12, "telefone": "41977773333"}
+    ]
+    
+    while True:
+        menu()
+        opcao = input("Escolha uma opção (1-5): ").strip()
+        
+        if opcao == "1":
+            cadastrar_paciente(pacientes)
+        elif opcao == "2":
+            ver_estatisticas(pacientes)
+        elif opcao == "3":
+            buscar_paciente(pacientes)
+        elif opcao == "4":
+            listar_pacientes(pacientes)
+        elif opcao == "5":
+            print("\nEncerrando o sistema Clínica Vida+. Até logo!")
+            break
+        else:
+            print("\n[ERRO] Opção inválida! Por favor, escolha um número entre 1 e 5.")
+
+if __name__ == "__main__":
+    main()</code>
+                    </pre>
+                </div>
+
+                <!-- Interactive Python Terminal Simulator -->
+                <div class="bg-slate-900 text-slate-100 rounded-2xl p-4 shadow-lg border border-slate-800 flex flex-col justify-between font-mono text-xs">
+                    <div>
+                        <div class="border-b border-slate-800 pb-2 mb-3 flex justify-between items-center text-slate-400">
+                            <span class="font-bold text-slate-300"><i class="fa-solid fa-terminal mr-2"></i>Simulador de Terminal Python</span>
+                            <span class="text-[10px] bg-emerald-950 text-emerald-400 px-2 py-0.5 rounded border border-emerald-800">Pronto</span>
+                        </div>
+                        <div id="terminal-output" class="space-y-1.5 h-[380px] overflow-y-auto font-mono text-slate-200">
+                            <p class="text-slate-400">Python 3.11.4 (main, Clínica Vida+ Environment)</p>
+                            <p class="text-slate-400">Digite o comando abaixo para interagir com o menu simulado:</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-800">
+                        <form id="terminal-form" onsubmit="handleTerminalSubmit(event)" class="flex space-x-2">
+                            <span class="text-emerald-500 font-bold self-center">&gt;&gt;&gt;</span>
+                            <input type="text" id="terminal-input" placeholder="Digite 1, 2, 3, 4 ou 5..." class="flex-1 bg-slate-800 border border-slate-700 rounded px-3 py-2 text-white focus:outline-none focus:border-brand-500 text-xs font-mono">
+                            <button type="submit" class="bg-brand-600 hover:bg-brand-500 text-white px-3 py-2 rounded font-semibold transition">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB: PASSO 3 - LÓGICA PROPOSICIONAL ==================== -->
+        <section id="tab-passo3" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-purple-600 bg-purple-50 px-2.5 py-1 rounded-md">Passo 3</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1">Lógica Proposicional & Tabelas-Verdade</h2>
+                <p class="text-slate-500 text-sm">Análise das condições para liberação de atendimento em modalidade Normal e Emergência.</p>
+            </div>
+
+            <!-- Definitions Box -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-2">Variáveis Proposicionais</h3>
+                    <ul class="space-y-2 text-sm text-slate-700">
+                        <li class="flex items-center"><span class="w-6 font-bold text-purple-600">A:</span> Tem agendamento realizado</li>
+                        <li class="flex items-center"><span class="w-6 font-bold text-purple-600">B:</span> Documentos pessoais e convênio válidos</li>
+                        <li class="flex items-center"><span class="w-6 font-bold text-purple-600">C:</span> Médico da especialidade disponível</li>
+                        <li class="flex items-center"><span class="w-6 font-bold text-purple-600">D:</span> Pagamentos / mensalidades em dia</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-2">Expressões Lógicas</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <span class="font-bold text-slate-800 block mb-1">Consulta Normal:</span>
+                            <code class="text-purple-700 font-bold">(A ∧ B ∧ C) ∨ (B ∧ C ∧ D)</code>
+                        </div>
+                        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                            <span class="font-bold text-slate-800 block mb-1">Emergência:</span>
+                            <code class="text-rose-700 font-bold">C ∧ (B ∨ D)</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Truth Table -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-slate-900 text-lg">Tabela-Verdade Completa (16 Combinações)</h3>
+                    <span class="text-xs bg-slate-100 text-slate-600 font-medium px-2.5 py-1 rounded-md">V = Verdadeiro | F = Falso</span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-center text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-800 text-white font-semibold">
+                                <th class="p-2 border border-slate-700">#</th>
+                                <th class="p-2 border border-slate-700">A</th>
+                                <th class="p-2 border border-slate-700">B</th>
+                                <th class="p-2 border border-slate-700">C</th>
+                                <th class="p-2 border border-slate-700">D</th>
+                                <th class="p-2 border border-slate-700 bg-purple-900">Consulta Normal: (A ∧ B ∧ C) ∨ (B ∧ C ∧ D)</th>
+                                <th class="p-2 border border-slate-700 bg-rose-900">Emergência: C ∧ (B ∨ D)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="truth-table-body" class="divide-y divide-slate-200 font-mono">
+                            <!-- Populated via Javascript for perfection -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Detailed Case Study -->
+            <div class="bg-gradient-to-r from-purple-50 via-white to-purple-50 p-6 rounded-2xl border border-purple-200 shadow-sm space-y-4">
+                <h3 class="font-bold text-purple-900 text-lg flex items-center">
+                    <i class="fa-solid fa-magnifying-glass-chart mr-2"></i> Análise Detalhada do Caso Específico: (A=F, B=V, C=V, D=F)
+                </h3>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    Neste cenário, o paciente <strong>não tem agendamento previamente feito (A=F)</strong>, possui <strong>documentos válidos (B=V)</strong>, existe <strong>médico disponível no plantão (C=V)</strong>, porém o paciente <strong>não está com pagamentos em dia (D=F)</strong>.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                    <div class="bg-white p-4 rounded-xl border border-purple-200 text-sm">
+                        <h4 class="font-bold text-slate-800 mb-2">1. Modalidade Consulta Normal</h4>
+                        <p class="font-mono text-xs text-slate-600 mb-2">= (F ∧ V ∧ V) ∨ (V ∧ V ∧ F)</p>
+                        <p class="font-mono text-xs text-slate-600 mb-2">= F ∨ F</p>
+                        <span class="inline-block px-2.5 py-1 bg-rose-100 text-rose-800 font-bold rounded text-xs">
+                            Resultado: FALSO (Atendimento Recusado)
+                        </span>
+                        <p class="text-xs text-slate-500 mt-2">Sem agendamento prévio nem situação financeira regularizada, o fluxo regular de consultas não libera o atendimento.</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-purple-200 text-sm">
+                        <h4 class="font-bold text-slate-800 mb-2">2. Modalidade Emergência</h4>
+                        <p class="font-mono text-xs text-slate-600 mb-2">= V ∧ (V ∨ F)</p>
+                        <p class="font-mono text-xs text-slate-600 mb-2">= V ∧ V</p>
+                        <span class="inline-block px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded text-xs">
+                            Resultado: VERDADEIRO (Atendimento Liberado)
+                        </span>
+                        <p class="text-xs text-slate-500 mt-2">Como há médico disponível e a documentação está em ordem, o atendimento emergencial é prontamente liberado independente do agendamento ou pagamentos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB: PASSO 4 - ESTRUTURA DE DADOS ==================== -->
+        <section id="tab-passo4" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md">Passo 4</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1">Estrutura de Dados: Fila FIFO (First-In, First-Out)</h2>
+                <p class="text-slate-500 text-sm">Mecanismo de atendimento em que o primeiro paciente a chegar é obrigatoriamente o primeiro a ser atendido.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Pseudocode Block -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-2">Algoritmo em Pseudocódigo (Portugol)</h3>
+                    <pre class="bg-slate-900 text-amber-400 p-4 rounded-xl font-mono text-xs leading-relaxed overflow-x-auto">
+<code>Algoritmo GerenciamentoFilaClinica
+Var
+    filaPacientes: Fila de Registro
+    p1, p2, p3, pAtendido: Registro
+Início
+    // 1. Criar e inicializar a fila vazia
+    InicializarFila(filaPacientes)
+
+    // 2. Definir dados dos 3 pacientes
+    p1.nome <- "Mariana Lima"
+    p1.cpf  <- "111.222.333-00"
+
+    p2.nome <- "Roberto Alves"
+    p2.cpf  <- "444.555.666-11"
+
+    p3.nome <- "Fernanda Costa"
+    p3.cpf  <- "777.888.999-22"
+
+    // 3. Enfileirar (Inserir) os 3 pacientes na Fila FIFO
+    Enfileirar(filaPacientes, p1)
+    Enfileirar(filaPacientes, p2)
+    Enfileirar(filaPacientes, p3)
+
+    Escreval("Fila inicial carregada com 3 pacientes.")
+
+    // 4. Remover o primeiro paciente para atendimento (FIFO)
+    pAtendido <- Desenfileirar(filaPacientes)
+    Escreval("Paciente removido para consulta: ", pAtendido.nome)
+
+    // 5. Exibir os pacientes restantes na ordem correta
+    Escreval("--- PACIENTES AGUARDANDO NA FILA ---")
+    ExibirFila(filaPacientes)
+    // Resultado exibido: 1º Roberto Alves, 2º Fernanda Costa
+Fimalgoritmo</code>
+                    </pre>
+                </div>
+
+                <!-- Interactive Queue Visualizer -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base border-b border-slate-200 pb-2 mb-4">Simulador Gráfico da Fila FIFO</h3>
+                        
+                        <!-- Queue Container -->
+                        <div id="queue-display" class="flex flex-col sm:flex-row items-center justify-start gap-3 p-4 bg-slate-50 rounded-xl border border-dashed border-slate-300 min-h-[140px] overflow-x-auto">
+                            <!-- Cards inserted dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 pt-4 border-t border-slate-200">
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="dequeuePatient()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs rounded-lg transition flex items-center shadow-sm">
+                                <i class="fa-solid fa-user-minus mr-1.5"></i> Chamar / Remover Próximo (Desenfileirar)
+                            </button>
+                            <button onclick="resetQueue()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-lg transition flex items-center">
+                                <i class="fa-solid fa-rotate-right mr-1.5"></i> Reiniciar Fila com 3 Pacientes
+                            </button>
+                        </div>
+                        <p id="queue-status-message" class="text-xs text-slate-500 italic">Clique no botão acima para simular a chamada médica e remoção do primeiro da fila.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB: PASSO 5 - CASOS DE USO ==================== -->
+        <section id="tab-passo5" class="tab-content hidden space-y-8">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md">Passo 5</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-1">Engenharia de Software: Diagrama de Casos de Uso UML</h2>
+                <p class="text-slate-500 text-sm">Mapeamento visual dos atores do sistema (Secretária e Médico) e seus respectivos relacionamentos.</p>
+            </div>
+
+            <!-- SVG Diagram Visual -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center overflow-x-auto">
+                <div class="min-w-[750px] w-full max-w-4xl">
+                    <svg viewBox="0 0 900 520" class="w-full h-auto font-sans">
+                        <!-- System Boundary Box -->
+                        <rect x="220" y="20" width="460" height="480" rx="16" fill="#f8fafc" stroke="#0284c7" stroke-width="2" stroke-dasharray="6,6" />
+                        <text x="450" y="45" font-family="Inter" font-size="14" font-weight="bold" fill="#0369a1" text-anchor="middle">Limites do Sistema: Clínica Vida+</text>
+
+                        <!-- ACTOR 1: SECRETÁRIA -->
+                        <g transform="translate(80, 180)">
+                            <circle cx="20" cy="15" r="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5" />
+                            <line x1="20" y1="29" x2="20" y2="65" stroke="#0284c7" stroke-width="2.5" />
+                            <line x1="-5" y1="42" x2="45" y2="42" stroke="#0284c7" stroke-width="2.5" />
+                            <line x1="20" y1="65" x2="0" y2="100" stroke="#0284c7" stroke-width="2.5" />
+                            <line x1="20" y1="65" x2="40" y2="100" stroke="#0284c7" stroke-width="2.5" />
+                            <text x="20" y="120" font-family="Inter" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Secretária</text>
+                        </g>
+
+                        <!-- ACTOR 2: MÉDICO -->
+                        <g transform="translate(800, 220)">
+                            <circle cx="20" cy="15" r="14" fill="#ccfbf1" stroke="#0d9488" stroke-width="2.5" />
+                            <line x1="20" y1="29" x2="20" y2="65" stroke="#0d9488" stroke-width="2.5" />
+                            <line x1="-5" y1="42" x2="45" y2="42" stroke="#0d9488" stroke-width="2.5" />
+                            <line x1="20" y1="65" x2="0" y2="100" stroke="#0d9488" stroke-width="2.5" />
+                            <line x1="20" y1="65" x2="40" y2="100" stroke="#0d9488" stroke-width="2.5" />
+                            <text x="20" y="120" font-family="Inter" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">Médico</text>
+                        </g>
+
+                        <!-- USE CASES (OVALS) -->
+                        <!-- UC1: Cadastrar Paciente -->
+                        <g transform="translate(260, 70)">
+                            <ellipse cx="80" cy="25" rx="75" ry="22" fill="#ffffff" stroke="#0284c7" stroke-width="2" />
+                            <text x="80" y="29" font-family="Inter" font-size="11" font-weight="600" fill="#1e293b" text-anchor="middle">Cadastrar paciente</text>
+                        </g>
+
+                        <!-- UC2: Verificar Cadastro (Included) -->
+                        <g transform="translate(490, 110)">
+                            <ellipse cx="85" cy="25" rx="80" ry="22" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3,3" />
+                            <text x="85" y="29" font-family="Inter" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Verificar cadastro do paciente</text>
+                        </g>
+
+                        <!-- UC3: Agendar Consulta -->
+                        <g transform="translate(260, 150)">
+                            <ellipse cx="75" cy="25" rx="70" ry="22" fill="#ffffff" stroke="#0284c7" stroke-width="2" />
+                            <text x="75" y="29" font-family="Inter" font-size="11" font-weight="600" fill="#1e293b" text-anchor="middle">Agendar consulta</text>
+                        </g>
+
+                        <!-- UC4: Confirmar Consulta -->
+                        <g transform="translate(260, 230)">
+                            <ellipse cx="75" cy="25" rx="70" ry="22" fill="#ffffff" stroke="#0284c7" stroke-width="2" />
+                            <text x="75" y="29" font-family="Inter" font-size="11" font-weight="600" fill="#1e293b" text-anchor="middle">Confirmar consulta</text>
+                        </g>
+
+                        <!-- UC5: Cancelar Consulta -->
+                        <g transform="translate(360, 310)">
+                            <ellipse cx="75" cy="25" rx="70" ry="22" fill="#ffffff" stroke="#0284c7" stroke-width="2" />
+                            <text x="75" y="29" font-family="Inter" font-size="11" font-weight="600" fill="#1e293b" text-anchor="middle">Cancelar consulta</text>
+                        </g>
+
+                        <!-- UC6: Gerar Receita -->
+                        <g transform="translate(480, 380)">
+                            <ellipse cx="70" cy="25" rx="65" ry="22" fill="#ffffff" stroke="#0d9488" stroke-width="2" />
+                            <text x="70" y="29" font-family="Inter" font-size="11" font-weight="600" fill="#1e293b" text-anchor="middle">Gerar receita</text>
+                        </g>
+
+                        <!-- UC7: Imprimir Receita (Included) -->
+                        <g transform="translate(260, 440)">
+                            <ellipse cx="70" cy="25" rx="65" ry="22" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5" stroke-dasharray="3,3" />
+                            <text x="70" y="29" font-family="Inter" font-size="10" font-weight="600" fill="#475569" text-anchor="middle">Imprimir receita</text>
+                        </g>
+
+                        <!-- CONNECTIONS: SECRETÁRIA -->
+                        <line x1="120" y1="210" x2="260" y2="95" stroke="#0284c7" stroke-width="1.5" />
+                        <line x1="120" y1="210" x2="260" y2="175" stroke="#0284c7" stroke-width="1.5" />
+                        <line x1="120" y1="210" x2="260" y2="255" stroke="#0284c7" stroke-width="1.5" />
+                        <line x1="120" y1="210" x2="360" y2="325" stroke="#0284c7" stroke-width="1.5" />
+
+                        <!-- CONNECTIONS: MÉDICO -->
+                        <line x1="800" y1="250" x2="510" y2="330" stroke="#0d9488" stroke-width="1.5" />
+                        <line x1="800" y1="250" x2="615" y2="395" stroke="#0d9488" stroke-width="1.5" />
+
+                        <!-- INCLUDES (DASHED ARROWS WITH TEXT) -->
+                        <!-- Agendar -> Verificar Cadastro -->
+                        <path d="M 400 170 L 490 145" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow)" />
+                        <text x="435" y="148" font-family="Inter" font-size="9" font-weight="bold" fill="#64748b">&lt;&lt;include&gt;&gt;</text>
+
+                        <!-- Confirmar -> Verificar Cadastro -->
+                        <path d="M 395 235 L 500 150" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow)" />
+                        <text x="450" y="200" font-family="Inter" font-size="9" font-weight="bold" fill="#64748b">&lt;&lt;include&gt;&gt;</text>
+
+                        <!-- Gerar Receita -> Imprimir Receita -->
+                        <path d="M 480 410 L 390 445" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#arrow)" />
+                        <text x="430" y="440" font-family="Inter" font-size="9" font-weight="bold" fill="#64748b">&lt;&lt;include&gt;&gt;</text>
+
+                        <!-- ARROWHEAD DEFINITION -->
+                        <defs>
+                            <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Global Footer / Conclusion -->
+        <footer class="bg-white border-t border-slate-200 mt-12 py-8 rounded-2xl p-6 shadow-sm space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600">
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-2">Conclusão do Projeto</h4>
+                    <p class="leading-relaxed">
+                        A aplicação integrada para a Clínica Vida+ demonstra com sucesso a união entre planejamento de projetos com Scrum, implementação de scripts organizados em Python, formalização lógica para tomadas de decisão, filas de atendimento FIFO e rigor de engenharia de software através de diagramação de casos de uso.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-800 mb-2">Referências e Ferramentas Utilizadas</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Linguagem Python 3 & Estruturas de Dados Básicas</li>
+                        <li>Tailwind CSS para Estilização Web Responsiva</li>
+                        <li>UML 2.5 - Diagramas de Casos de Uso</li>
+                        <li>Metodologia Ágil Framework Scrum</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 pt-4 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-400">
+                <span>© 2026 Clínica Vida+ - Todos os direitos reservados. Trabalho Acadêmico.</span>
+                <span class="mt-2 sm:mt-0 font-medium">Desenvolvido para fins de avaliação universitária</span>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Modal for Trello Instructions -->
+    <div id="modal-trello-instructions" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-900 text-lg flex items-center">
+                    <i class="fa-brands fa-trello text-blue-600 mr-2"></i> Criar Quadro no Trello Real
+                </h3>
+                <button onclick="closeModal('modal-trello-instructions')" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+                Para recriar este quadro no Trello oficial da sua equipe, siga os passos abaixo:
+            </p>
+            <ol class="list-decimal list-inside text-xs text-slate-700 space-y-2 font-medium">
+                <li>Acesse <a href="https://trello.com" target="_blank" class="text-brand-600 underline">trello.com</a> e crie um novo quadro chamado "Clínica Vida+".</li>
+                <li>Crie as 4 Listas: <strong>Backlog</strong>, <strong>Sprint Atual</strong>, <strong>Em Progresso</strong> e <strong>Concluído</strong>.</li>
+                <li>Adicione as tarefas fornecidas neste protótipo em suas respectivas colunas.</li>
+                <li>Atribua os membros da equipe e configure etiquetas para cada Sprint.</li>
+            </ol>
+            <div class="pt-3 border-t border-slate-100 text-right">
+                <button onclick="closeModal('modal-trello-instructions')" class="px-4 py-2 bg-slate-800 text-white font-semibold text-xs rounded-lg hover:bg-slate-700 transition">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic Scripts -->
+    <script>
+        // State for Queue
+        let currentQueue = [
+            { nome: "Mariana Lima", cpf: "111.222.333-00" },
+            { nome: "Roberto Alves", cpf: "444.555.666-11" },
+            { nome: "Fernanda Costa", cpf: "777.888.999-22" }
+        ];
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('block'));
+            
+            const activeTab = document.getElementById('tab-' + tabId);
+            if (activeTab) {
+                activeTab.classList.remove('hidden');
+                activeTab.classList.add('block');
+            }
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-brand-600', 'bg-brand-50');
+                btn.classList.add('text-slate-600');
+            });
+
+            const activeBtn = document.getElementById('nav-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('text-brand-600', 'bg-brand-50');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Modal Helpers
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        // Kanban Drag and Drop Mechanics
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+        function drop(ev, colName) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            var card = document.getElementById(data);
+            var colContainer = document.getElementById('col-' + colName);
+            if (card && colContainer) {
+                colContainer.appendChild(card);
+                updateKanbanCounts();
+            }
+        }
+
+        function updateKanbanCounts() {
+            document.getElementById('count-backlog').innerText = document.getElementById('col-backlog').children.length;
+            document.getElementById('count-sprint').innerText = document.getElementById('col-sprint').children.length;
+            document.getElementById('count-progresso').innerText = document.getElementById('col-progresso').children.length;
+            document.getElementById('count-concluido').innerText = document.getElementById('col-concluido').children.length;
+        }
+
+        function exportKanbanData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                sprint: 1,
+                clinica: "Clínica Vida+",
+                dataExportacao: new Date().toLocaleDateString('pt-BR')
+            }));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "kanban_clinica_vida.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        // Python Code Download & Terminal Simulator
+        function downloadPythonFile() {
+            const code = document.getElementById('python-code-display').innerText;
+            const blob = new Blob([code], { type: 'text/x-python' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'clinica_vida.py';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function copyPythonCode() {
+            const code = document.getElementById('python-code-display').innerText;
+            navigator.clipboard.writeText(code);
+            alert("Código Python copiado para a área de transferência!");
+        }
+
+        function handleTerminalSubmit(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById('terminal-input');
+            const outputEl = document.getElementById('terminal-output');
+            const val = inputEl.value.trim();
+            if (!val) return;
+
+            // Render user command
+            outputEl.innerHTML += `<p class="text-brand-400 font-bold">&gt;&gt;&gt; ${val}</p>`;
+
+            // Simulate outputs based on menu choice
+            if (val === "1") {
+                outputEl.innerHTML += `<p class="text-emerald-400">[SIMULAÇÃO] Paciente 'Lucas Andrade' (34 anos) cadastrado com sucesso!</p>`;
+            } else if (val === "2") {
+                outputEl.innerHTML += `<p class="text-slate-300">--- ESTATÍSTICAS ---\nTotal: 3 pacientes | Média Idade: 35.0 anos\nMais novo: Beatriz (12) | Mais velho: Carlos (65)</p>`;
+            } else if (val === "3") {
+                outputEl.innerHTML += `<p class="text-slate-300">Encontrado: Ana Maria Silva | Idade: 28 | Tel: 41988881111</p>`;
+            } else if (val === "4") {
+                outputEl.innerHTML += `<p class="text-slate-300">1. Ana Maria Silva (28) | 2. Carlos Eduardo (65) | 3. Beatriz Santos (12)</p>`;
+            } else if (val === "5") {
+                outputEl.innerHTML += `<p class="text-amber-400">Encerrando execução simulada do sistema...</p>`;
+            } else {
+                outputEl.innerHTML += `<p class="text-rose-400">[ERRO] Opção inválida! Escolha um número de 1 a 5.</p>`;
+            }
+
+            inputEl.value = '';
+            outputEl.scrollTop = outputEl.scrollHeight;
+        }
+
+        // Truth Table Generator
+        function renderTruthTable() {
+            const tbody = document.getElementById('truth-table-body');
+            tbody.innerHTML = '';
+
+            let countNormalTrue = 0;
+            let countEmergenciaTrue = 0;
+
+            let rowNum = 1;
+            const bools = [true, false];
+
+            for (let A of bools) {
+                for (let B of bools) {
+                    for (let C of bools) {
+                        for (let D of bools) {
+                            // Expressions
+                            const normal = (A && B && C) || (B && C && D);
+                            const emergencia = C && (B || D);
+
+                            if (normal) countNormalTrue++;
+                            if (emergencia) countEmergenciaTrue++;
+
+                            const isTargetCase = (!A && B && C && !D);
+
+                            const tr = document.createElement('tr');
+                            tr.className = isTargetCase ? "bg-amber-100 font-bold text-amber-900 border-2 border-amber-400" : "hover:bg-slate-50";
+
+                            tr.innerHTML = `
+                                <td class="p-2 border border-slate-200">${rowNum++}</td>
+                                <td class="p-2 border border-slate-200 ${A ? 'text-emerald-600':'text-rose-600'}">${A ? 'V' : 'F'}</td>
+                                <td class="p-2 border border-slate-200 ${B ? 'text-emerald-600':'text-rose-600'}">${B ? 'V' : 'F'}</td>
+                                <td class="p-2 border border-slate-200 ${C ? 'text-emerald-600':'text-rose-600'}">${C ? 'V' : 'F'}</td>
+                                <td class="p-2 border border-slate-200 ${D ? 'text-emerald-600':'text-rose-600'}">${D ? 'V' : 'F'}</td>
+                                <td class="p-2 border border-slate-200 ${normal ? 'bg-emerald-50 text-emerald-700 font-bold' : 'bg-rose-50 text-rose-700'}">${normal ? 'V (Liberado)' : 'F (Recusado)'}</td>
+                                <td class="p-2 border border-slate-200 ${emergencia ? 'bg-emerald-50 text-emerald-700 font-bold' : 'bg-rose-50 text-rose-700'}">${emergencia ? 'V (Liberado)' : 'F (Recusado)'}</td>
+                            `;
+                            tbody.appendChild(tr);
+                        }
+                    }
+                }
+            }
+        }
+
+        // FIFO Queue Simulator Logic
+        function updateQueueDisplay() {
+            const container = document.getElementById('queue-display');
+            container.innerHTML = '';
+
+            if (currentQueue.length === 0) {
+                container.innerHTML = `<span class="text-xs text-rose-500 font-semibold p-4">A fila de pacientes está completamente vazia!</span>`;
+                return;
+            }
+
+            currentQueue.forEach((pt, index) => {
+                const isFirst = index === 0;
+                const card = document.createElement('div');
+                card.className = `p-3 rounded-xl border flex-1 min-w-[180px] shadow-sm transition ${
+                    isFirst ? 'bg-emerald-50 border-emerald-300 ring-2 ring-emerald-400/30' : 'bg-white border-slate-200'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold ${isFirst ? 'bg-emerald-200 text-emerald-800' : 'bg-slate-100 text-slate-600'} px-2 py-0.5 rounded">
+                            ${isFirst ? '1º - Próximo Atendimento' : (index + 1) + 'º da Fila'}
+                        </span>
+                        <i class="fa-solid fa-user-clock text-xs ${isFirst ? 'text-emerald-600' : 'text-slate-400'}"></i>
+                    </div>
+                    <h5 class="font-bold text-xs text-slate-800">${pt.nome}</h5>
+                    <p class="text-[11px] font-mono text-slate-500">CPF: ${pt.cpf}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function dequeuePatient() {
+            if (currentQueue.length === 0) return;
+            const removed = currentQueue.shift();
+            const msgEl = document.getElementById('queue-status-message');
+            msgEl.innerText = `[AÇÃO RECENTE] Paciente ${removed.nome} (CPF: ${removed.cpf}) foi removido da fila e encaminhado ao consultório.`;
+            msgEl.className = "text-xs text-emerald-600 font-semibold";
+            updateQueueDisplay();
+        }
+
+        function resetQueue() {
+            currentQueue = [
+                { nome: "Mariana Lima", cpf: "111.222.333-00" },
+                { nome: "Roberto Alves", cpf: "444.555.666-11" },
+                { nome: "Fernanda Costa", cpf: "777.888.999-22" }
+            ];
+            const msgEl = document.getElementById('queue-status-message');
+            msgEl.innerText = "Fila reiniciada com os 3 pacientes originais.";
+            msgEl.className = "text-xs text-slate-500 italic";
+            updateQueueDisplay();
+        }
+
+        // Initialize App
+        window.onload = function() {
+            renderTruthTable();
+            updateQueueDisplay();
+        };
+    </script>
+</body>
+</html>
